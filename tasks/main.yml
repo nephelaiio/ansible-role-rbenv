@@ -41,12 +41,20 @@
     - "rbenv_conf"
 
 # Set up configuration file
-- name: configure rbenv
+- name: configure rbenv path
   lineinfile: >
     dest="~/.{{ rbenv_conf_file }}"
-    line='[[ -d ~/.{{ rbenv_bin_path }} ]] && PATH="~/.{{ rbenv_bin_path }}:$PATH"'
+    line='[[ -d ~/{{ rbenv_bin_path }} ]] && export PATH="~/{{ rbenv_bin_path }}:$PATH"'
   become: no
-  when: rbenv_conf_file is defined and rbenv_bin_file is defined
+  tags:
+    - "rbenv"
+    - "rbenv_conf"
+
+- name: rbenv init
+  lineinfile: >
+    dest="~/.{{ rbenv_conf_file }}"
+    line='[[ -f ~/{{ rbenv_bin_path }}/rbenv ]] && eval "$(~/{{ rbenv_bin_path }}/rbenv init -)"'
+  become: no
   tags:
     - "rbenv"
     - "rbenv_conf"

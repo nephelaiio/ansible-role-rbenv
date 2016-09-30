@@ -23,6 +23,6 @@ galaxy_info:
   galaxy_tags:
     - rbenv
 
-dependencies: 
-  - { role: nephelaiio.git } 
-  - { role: nephelaiio.devtools } 
+dependencies:
+  - { role: nephelaiio.git }
+  - { role: nephelaiio.devtools }
