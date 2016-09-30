@@ -1,0 +1,12 @@
+---
+# User variables for role
+rbenv_packages: []
+rbenv_packages_state: present
+rbenv_source_repo: https://github.com/rbenv/rbenv.git
+rbenv_source_version: v1.0.0
+rbenv_conf_file: bash_profile
+rbenv_path: .rbenv
+rbenv_bin_path: "{{ rbenv_path }}/bin"
+rbenv_plugin_path: "{{ rbenv_path }}/plugins"
+rbenv_users: 
+  - "{{ ansible_ssh_user }}"

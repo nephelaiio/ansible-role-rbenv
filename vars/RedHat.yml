@@ -1,0 +1,8 @@
+---
+rbenv_packages:
+  - zlib-devel
+  - readline-devel
+  - openssl-devel
+  - sqlite-devel
+  - libffi-devel
+  - curl

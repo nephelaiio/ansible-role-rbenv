@@ -1,0 +1,11 @@
+---
+rbenv_packages:
+  - zlib1g
+  - zlib1g-dev
+  - libreadline6
+  - libreadline6-dev
+  - libssl-dev
+  - libsqlite3-dev
+  - libffi-dev
+  - curl
+rbenv_conf_file: bashrc

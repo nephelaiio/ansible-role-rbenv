@@ -1,0 +1,2 @@
+[[ -f ~/.bashrc ]] && . ~/.bashrc
+[[ -d ~/.{{ rbenv_bin_path }} ]] && PATH="~/.{{ rbenv_bin_path }}:$PATH"
