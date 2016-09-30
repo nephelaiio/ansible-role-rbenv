@@ -2,3 +2,5 @@
 
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
+
+[[ -d ~/{{ rbenv_bin_path }} ]] && PATH="~/{{ rbenv_bin_path }}:$PATH"
