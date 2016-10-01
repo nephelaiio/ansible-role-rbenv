@@ -9,4 +9,4 @@ rbenv_path: .rbenv
 rbenv_bin_path: "{{ rbenv_path }}/bin"
 rbenv_plugin_path: "{{ rbenv_path }}/plugins"
 rbenv_users:
-  - "{{ ansible_ssh_user }}"
+  - "{{ ansible_user }}"
