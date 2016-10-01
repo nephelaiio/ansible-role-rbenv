@@ -22,39 +22,64 @@
 - name: install rbenv sources
   git: >
     repo="{{ rbenv_source_repo }}"
-    dest="{{ item + '/' + rbenv_path }}"
+    dest="~{{ item }}/{{ rbenv_path }}"
     version="{{ rbenv_source_version }}"
   become: no
   with_items: "{{ rbenv_users }}"
   tags:
     - rbenv
 
+# Set up configuration file
 - name: create configuration files
   template: >
-    dest="~/.{{ rbenv_conf_file }}"
+    dest="~{{ item }}/.{{ rbenv_conf_file }}"
     src="{{ rbenv_conf_file }}"
     force=no
   become: no
   when: rbenv_conf_file is defined
+  with_items: "{{ rbenv_users }}"
   tags:
     - "rbenv"
     - "rbenv_conf"
 
-# Set up configuration file
 - name: configure rbenv path
   lineinfile: >
-    dest="~/.{{ rbenv_conf_file }}"
+    dest="~{{ item }}/.{{ rbenv_conf_file }}"
     line='[[ -d ~/{{ rbenv_bin_path }} ]] && export PATH="~/{{ rbenv_bin_path }}:$PATH"'
   become: no
+  with_items: "{{ rbenv_users }}"
   tags:
     - "rbenv"
     - "rbenv_conf"
 
 - name: rbenv init
   lineinfile: >
-    dest="~/.{{ rbenv_conf_file }}"
-    line='[[ -f ~/{{ rbenv_bin_path }}/rbenv ]] && eval "$(~/{{ rbenv_bin_path }}/rbenv init -)"'
+    dest="~{{ item }}/.{{ rbenv_conf_file }}"
+    line="[[ -f ~/{{ rbenv_bin_path }}/rbenv ]] && eval \"$(~/{{ rbenv_bin_path }}/rbenv init -)\""
   become: no
+  with_items: "{{ rbenv_users }}"
   tags:
     - "rbenv"
     - "rbenv_conf"
+
+- name: rbenv plugin directory
+  file: >
+    dest="~{{ item}}/{{ rbenv_plugin_path }}"
+    state=directory
+  become: no
+  with_items: "{{ rbenv_users }}"
+  tags:
+    - "rbenv"
+    - "rbenv_conf"
+
+- name: rbenv plugins
+  git: >
+    repo="{{ item[1]['repo'] }}"
+    dest="~{{ item[0] }}/{{ item[1]['name'] }}"
+    version="{{ item[1]['version'] }}"
+  become: no
+  with_nested:
+    - "{{ rbenv_users }}"
+    - "{{ rbenv_plugins }}"
+  tags:
+    - rbenv
