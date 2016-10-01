@@ -1,0 +1,11 @@
+---
+rbenv_packages:
+  - libcurl4-openssl-dev
+  - libffi-dev
+  - libreadline-dev
+  - libssl-dev
+  - libxml2-dev
+  - libxslt1-dev
+  - zlib1g-dev
+
+rbenv_conf_file: bash_profile
