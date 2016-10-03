@@ -64,7 +64,7 @@
 
 - name: rbenv plugin directory
   file: >
-    dest="~{{ item}}/{{ rbenv_plugin_path }}"
+    dest="~{{ item }}/{{ rbenv_plugin_path }}"
     state=directory
   become: no
   with_items: "{{ rbenv_users }}"
@@ -75,11 +75,12 @@
 - name: rbenv plugins
   git: >
     repo="{{ item[1]['repo'] }}"
-    dest="~{{ item[0] }}/{{ item[1]['name'] }}"
+    dest="~{{ item[0] }}/{{ rbenv_plugin_path }}/{{ item[1]['name'] }}"
     version="{{ item[1]['version'] }}"
   become: no
   with_nested:
     - "{{ rbenv_users }}"
     - "{{ rbenv_plugins }}"
   tags:
-    - rbenv
+    - "rbenv"
+    - "rbenv_conf"
