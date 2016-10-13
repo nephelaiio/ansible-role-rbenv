@@ -18,6 +18,8 @@ rbenv_plugin_path: "{{ rbenv_path }}/plugins"
 rbenv_users:
   - "{{ ansible_user }}"
 
+rbenv_ruby_versions: []
+
 rbenv_plugins:
   - { name: "rbenv-vars",         repo: "https://github.com/rbenv/rbenv-vars.git",         version: "v1.2.0" }
   - { name: "ruby-build",         repo: "https://github.com/rbenv/ruby-build.git",         version: "v20160426" }

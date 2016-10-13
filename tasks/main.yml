@@ -84,3 +84,13 @@
   tags:
     - "rbenv"
     - "rbenv_conf"
+
+- name: rbenv install ruby version
+  shell: >
+    ~/{{ rbenv_bin_path }}/rbenv install $(echo {{ item[1] }})
+    creates="~/{{ rbenv_path }}/versions/{{ item[1] }}"
+  become: yes
+  become_user: "{{ item[0] }}"
+  with_nested:
+    - "{{ rbenv_users }}"
+    - "{{ rbenv_ruby_versions }}"
