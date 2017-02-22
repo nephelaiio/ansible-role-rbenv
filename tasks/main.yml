@@ -76,7 +76,7 @@
   git: >
     repo="{{ item[1]['repo'] }}"
     dest="~{{ item[0] }}/{{ rbenv_plugin_path }}/{{ item[1]['name'] }}"
-    version="{{ item[1]['version'] }}"
+    version="{{ item[1]['version'] | default('master') }}"
   become: no
   with_nested:
     - "{{ rbenv_users }}"
