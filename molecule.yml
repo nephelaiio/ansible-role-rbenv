@@ -1,44 +1,47 @@
+# vim: ts=2 sw=2 et :
 ---
 driver:
   name: docker
 
 docker:
   containers:
-      - name: ansible-rbenv-jessie
-        image: debian
-        image_version: jessie
-        ansible_groups:
-          - install
-      - name: ansible-rbenv-xenial
-        image: ubuntu
-        image_version: xenial
-        ansible_groups:
-          - install
-      - name: ansible-rbenv-centos7
-        image: centos
-        image_version: 7
-        ansible_groups:
-          - install
-      - name: ansible-rbenv-arch
-        image: pritunl/archlinux
-        image_version: latest
-        dockerfile: docker/arch.dockerfile
-        command: /bin/bash
-        ansible_groups:
-          - install
-      - name: ansible-rbenv-compile
-        image: ubuntu
-        image_version: xenial
-        ansible_groups:
-          - compile
+    - name: ansible-rbenv-jessie
+      image: debian
+      image_version: jessie
+    - name: ansible-rbenv-xenial
+      image: ubuntu
+      image_version: xenial
+    - name: ansible-rbenv-centos7
+      image: centos
+      image_version: 7
+    - name: ansible-rbenv-arch
+      image: pritunl/archlinux
+      image_version: latest
+      dockerfile: docker/arch.dockerfile
+      command: /bin/bash
+    - name: ansible-rbenv-compile
+      image: ubuntu
+      image_version: xenial
+      ansible_groups:
+        - compile
 
 ansible:
-  requirements_file: dependencies.yml
   group_vars:
     compile:
-      - rbenv_ruby_versions:
+      rbenv_ruby_versions:
         - 2.3.1
-        - 2.2.5
+
+molecule:
+  ignore_paths:
+    - .git
+    - .ropeproject
+    - .molecule
+
+dependency:
+  requirements_file: dependencies.yml
+  name: galaxy
 
 verifier:
   name: testinfra
+  options:
+    ignore: roles
