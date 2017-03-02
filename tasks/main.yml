@@ -1,3 +1,4 @@
+# vim: ts=2 sw=2 et :
 ---
 # Include variable definitions
 - name: "include variable overrides"
@@ -11,19 +12,19 @@
 
 # Install packages
 - name: install rbenv build dependencies
-  package: >
-    name="{{ rbenv_packages }}"
-    state="{{ rbenv_packages_state }}"
+  package:
+    name: "{{ rbenv_packages }}"
+    state: "{{ rbenv_packages_state }}"
   when: rbenv_packages
   become: yes
   tags:
     - rbenv
 
 - name: install rbenv sources
-  git: >
-    repo="{{ rbenv_source_repo }}"
-    dest="~{{ item }}/{{ rbenv_path }}"
-    version="{{ rbenv_source_version }}"
+  git:
+    repo: "{{ rbenv_source_repo }}"
+    dest: "~{{ item }}/{{ rbenv_path }}"
+    version: "{{ rbenv_source_version }}"
   become: no
   with_items: "{{ rbenv_users }}"
   tags:
@@ -31,10 +32,10 @@
 
 # Set up configuration file
 - name: create configuration files
-  template: >
-    dest="~{{ item }}/.{{ rbenv_conf_file }}"
-    src="{{ rbenv_conf_file }}"
-    force=no
+  template:
+    dest: "~{{ item }}/.{{ rbenv_conf_file }}"
+    src: "{{ rbenv_conf_file }}"
+    force: no
   become: no
   when: rbenv_conf_file is defined
   with_items: "{{ rbenv_users }}"
@@ -43,9 +44,9 @@
     - "rbenv_conf"
 
 - name: configure rbenv path
-  lineinfile: >
-    dest="~{{ item }}/.{{ rbenv_conf_file }}"
-    line='[[ -d ~/{{ rbenv_bin_path }} ]] && export PATH="~/{{ rbenv_bin_path }}:$PATH"'
+  lineinfile:
+    dest: "~{{ item }}/.{{ rbenv_conf_file }}"
+    line: '[[ -d ~/{{ rbenv_bin_path }} ]] && export PATH="~/{{ rbenv_bin_path }}:$PATH"'
   become: no
   with_items: "{{ rbenv_users }}"
   tags:
@@ -53,9 +54,9 @@
     - "rbenv_conf"
 
 - name: rbenv init
-  lineinfile: >
-    dest="~{{ item }}/.{{ rbenv_conf_file }}"
-    line="[[ -f ~/{{ rbenv_bin_path }}/rbenv ]] && eval \"$(~/{{ rbenv_bin_path }}/rbenv init -)\""
+  lineinfile:
+    dest: "~{{ item }}/.{{ rbenv_conf_file }}"
+    line: "[[ -f ~/{{ rbenv_bin_path }}/rbenv ]] && eval \"$(~/{{ rbenv_bin_path }}/rbenv init -)\""
   become: no
   with_items: "{{ rbenv_users }}"
   tags:
@@ -63,9 +64,9 @@
     - "rbenv_conf"
 
 - name: rbenv plugin directory
-  file: >
-    dest="~{{ item }}/{{ rbenv_plugin_path }}"
-    state=directory
+  file:
+    dest: "~{{ item }}/{{ rbenv_plugin_path }}"
+    state: directory
   become: no
   with_items: "{{ rbenv_users }}"
   tags:
@@ -73,10 +74,10 @@
     - "rbenv_conf"
 
 - name: rbenv plugins
-  git: >
-    repo="{{ item[1]['repo'] }}"
-    dest="~{{ item[0] }}/{{ rbenv_plugin_path }}/{{ item[1]['name'] }}"
-    version="{{ item[1]['version'] | default('master') }}"
+  git:
+    repo: "{{ item[1]['repo'] }}"
+    dest: "~{{ item[0] }}/{{ rbenv_plugin_path }}/{{ item[1]['name'] }}"
+    version: "{{ item[1]['version'] | default('master') }}"
   become: no
   with_nested:
     - "{{ rbenv_users }}"
@@ -86,9 +87,8 @@
     - "rbenv_conf"
 
 - name: rbenv install ruby version
-  shell: >
-    ~/{{ rbenv_bin_path }}/rbenv install $(echo {{ item[1] }})
-    creates="~/{{ rbenv_path }}/versions/{{ item[1] }}"
+  shell: ~/{{ rbenv_bin_path }}/rbenv install $(echo {{ item[1] }})
+    creates: "~/{{ rbenv_path }}/versions/{{ item[1] }}"
   become: yes
   become_user: "{{ item[0] }}"
   with_nested:
