@@ -81,8 +81,8 @@
     - "rbenv_conf"
 
 - name: rbenv install ruby version
-  shell: >
-    ~/{{ rbenv_bin_path }}/rbenv install $(echo {{ item }})
-    creates="~/{{ rbenv_path }}/versions/{{ item }}"
+  shell: "~/{{ rbenv_bin_path }}/rbenv install $(echo {{ item }})"
+  args:
+    creates: "~/{{ rbenv_path }}/versions/{{ item }}"
   with_items:
     - "{{ rbenv_ruby_versions }}"
