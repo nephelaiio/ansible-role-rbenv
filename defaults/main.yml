@@ -8,8 +8,6 @@ rbenv_conf_file: bash_profile
 rbenv_path: .rbenv
 rbenv_bin_path: "{{ rbenv_path }}/bin"
 rbenv_plugin_path: "{{ rbenv_path }}/plugins"
-rbenv_users:
-  - "{{ ansible_user }}"
 rbenv_ruby_versions: []
 rbenv_plugins:
   - name: "rbenv-vars"
