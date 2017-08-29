@@ -1,28 +1,32 @@
 # vim: ts=2 sw=2 et :
 ---
-rbenv_packages: []
-rbenv_packages_state: present
-rbenv_source_repo: https://github.com/rbenv/rbenv.git
-rbenv_source_version: master
-rbenv_conf_file: bash_profile
-rbenv_path: .rbenv
-rbenv_bin_path: "{{ rbenv_path }}/bin"
-rbenv_plugin_path: "{{ rbenv_path }}/plugins"
-rbenv_ruby_versions: []
-rbenv_plugins:
-  - name: "rbenv-vars"
-    repo: "https://github.com/rbenv/rbenv-vars.git"
-  - name: "ruby-build"
-    repo: "https://github.com/rbenv/ruby-build.git"
-  - name: "rbenv-default-gems"
-    repo: "https://github.com/rbenv/rbenv-default-gems.git"
-  - name: "rbenv-installer"
-    repo: "https://github.com/rbenv/rbenv-installer.git"
-  - name: "rbenv-update"
-    repo: "https://github.com/rkh/rbenv-update.git"
-  - name: "rbenv-whatis"
-    repo: "https://github.com/rkh/rbenv-whatis.git"
-  - name: "rbenv-use"
-    repo: "https://github.com/rkh/rbenv-use.git"
-  - name: "rbenv-gemset"
-    repo: "https://github.com/jf/rbenv-gemset.git"
+rbenv:
+  repo: https://github.com/rbenv/rbenv.git
+  version: master
+  path: "~/.rbenv"
+  ruby: 2.4.1
+  gems: []
+  plugins:
+    - name: "rbenv-vars"
+      repo: "https://github.com/rbenv/rbenv-vars.git"
+    - name: "ruby-build"
+      repo: "https://github.com/rbenv/ruby-build.git"
+    - name: "rbenv-default-gems"
+      repo: "https://github.com/rbenv/rbenv-default-gems.git"
+    - name: "rbenv-installer"
+      repo: "https://github.com/rbenv/rbenv-installer.git"
+    - name: "rbenv-update"
+      repo: "https://github.com/rkh/rbenv-update.git"
+    - name: "rbenv-whatis"
+      repo: "https://github.com/rkh/rbenv-whatis.git"
+    - name: "rbenv-use"
+      repo: "https://github.com/rkh/rbenv-use.git"
+    - name: "rbenv-gemset"
+      repo: "https://github.com/jf/rbenv-gemset.git"
+
+_rbenv:
+  conf: "~/.bash_profile"
+  path:
+    bin: "{{ rbenv.path }}/bin"
+    plugins: "{{ rbenv.path }}/plugins"
+  

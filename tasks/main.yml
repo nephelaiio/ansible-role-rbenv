@@ -1,6 +1,5 @@
 # vim: ts=2 sw=2 et :
 ---
-# Include variable definitions
 - name: "include variable overrides"
   include_vars: "{{ item }}"
   with_first_found:
@@ -10,79 +9,73 @@
   tags:
     - rbenv
 
-# Install packages
-- name: install rbenv build dependencies
-  package:
-    name: "{{ rbenv_packages }}"
-    state: "{{ rbenv_packages_state }}"
-  when: rbenv_packages
-  become: yes
-  tags:
-    - rbenv
-
 - name: install rbenv sources
-  git:
-    repo: "{{ rbenv_source_repo }}"
-    dest: "~/{{ rbenv_path }}"
-    version: "{{ rbenv_source_version }}"
   become: no
+  git:
+    repo: "{{ rbenv.repo }}"
+    dest: "{{ rbenv.path }}"
+    version: "{{ rbenv.version }}"
   tags:
     - rbenv
 
-# Set up configuration file
 - name: create configuration files
-  template:
-    dest: "~/.{{ rbenv_conf_file }}"
-    src: "{{ rbenv_conf_file }}"
-    force: no
   become: no
+  template:
+    dest: "{{ _rbenv.conf }}"
+    src: "{{ _rbenv.conf }}"
+    force: no
   when: rbenv_conf_file is defined
   tags:
     - "rbenv"
-    - "rbenv_conf"
 
 - name: configure rbenv path
-  lineinfile:
-    dest: "~/.{{ rbenv_conf_file }}"
-    line: '[[ -d ~/{{ rbenv_bin_path }} ]] && export PATH="~/{{ rbenv_bin_path }}:$PATH"'
   become: no
+  lineinfile:
+    dest: "{{ _rbenv.conf }}"
+    line: '[[ -d {{ rbenv.bin }} ]] && export PATH="{{ rbenv.bin }}:$PATH"'
   tags:
     - "rbenv"
-    - "rbenv_conf"
 
 - name: rbenv init
-  lineinfile:
-    dest: "~/.{{ rbenv_conf_file }}"
-    line: "[[ -f ~/{{ rbenv_bin_path }}/rbenv ]] && eval \"$(~/{{ rbenv_bin_path }}/rbenv init -)\""
   become: no
+  lineinfile:
+    dest: "{{ rbenv.conf }}"
+    line: "[[ -f {{ rbenv.bin }}/rbenv ]] && eval \"$({{ rbenv.bin }}/rbenv init -)\""
   tags:
     - "rbenv"
-    - "rbenv_conf"
 
 - name: rbenv plugin directory
-  file:
-    dest: "~/{{ rbenv_plugin_path }}"
-    state: directory
   become: no
+  file:
+    dest: "{{ _rbenv.path.plugins }}"
+    state: directory
   tags:
     - "rbenv"
-    - "rbenv_conf"
 
 - name: rbenv plugins
+  become: no
   git:
     repo: "{{ item['repo'] }}"
-    dest: "~/{{ rbenv_plugin_path }}/{{ item['name'] }}"
+    dest: "{{ _rbenv.path.plugins }}/{{ item['name'] }}"
     version: "{{ item['version'] | default('master') }}"
-  become: no
   with_items:
-    - "{{ rbenv_plugins }}"
+    - "{{ rbenv.plugins }}"
   tags:
     - "rbenv"
-    - "rbenv_conf"
+
+- name: Set up default gems
+  template:
+    dest: "{{ _rbenv.path }}/default-gems"
+    src: "{{ _rbenv.conf }}"
+  vars:
+    gems: "{{ rbenv.gems }}"
+  tags:
+    - "rbenv"
 
 - name: rbenv install ruby version
-  shell: "~/{{ rbenv_bin_path }}/rbenv install $(echo {{ item }})"
+  become: no
+  shell: "{{ rbenv.bin }}/rbenv install {{ rbenv.version }}"
   args:
-    creates: "~/{{ rbenv_path }}/versions/{{ item }}"
-  with_items:
-    - "{{ rbenv_ruby_versions }}"
+    creates: "{{ rbenv.path }}/versions/{{ rbenv.version }}"
+  tags:
+    - "rbenv"
