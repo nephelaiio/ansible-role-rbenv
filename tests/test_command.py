@@ -8,3 +8,4 @@ testinfra_hosts = \
 def test_command(Command):
     cmd = '/bin/bash -l -c "rbenv --version"'
     assert Command(cmd).rc == 0
+    cmd = '/bin/bash -l -c "rbenv --version"'

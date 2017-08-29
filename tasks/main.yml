@@ -9,6 +9,14 @@
   tags:
     - rbenv
 
+- name: install rbenv dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ rbenv_packages }}"
+  tags:
+    - rbenv
+
 - name: install rbenv sources
   become: no
   git:
@@ -22,9 +30,11 @@
   become: no
   template:
     dest: "{{ _rbenv.conf }}"
-    src: "{{ _rbenv.conf }}"
+    src: bash_profile
     force: no
-  when: rbenv_conf_file is defined
+  vars:
+    path:
+      bin: "{{ _rbenv.path.bin }}"
   tags:
     - "rbenv"
 
@@ -32,15 +42,15 @@
   become: no
   lineinfile:
     dest: "{{ _rbenv.conf }}"
-    line: '[[ -d {{ rbenv.bin }} ]] && export PATH="{{ rbenv.bin }}:$PATH"'
+    line: '[[ -d {{ _rbenv.path.bin }} ]] && export PATH="{{ _rbenv.path.bin }}:$PATH"'
   tags:
     - "rbenv"
 
 - name: rbenv init
   become: no
   lineinfile:
-    dest: "{{ rbenv.conf }}"
-    line: "[[ -f {{ rbenv.bin }}/rbenv ]] && eval \"$({{ rbenv.bin }}/rbenv init -)\""
+    dest: "{{ _rbenv.conf }}"
+    line: "[[ -f {{ _rbenv.path.bin }}/rbenv ]] && eval \"$({{ _rbenv.path.bin }}/rbenv init -)\""
   tags:
     - "rbenv"
 
@@ -65,17 +75,28 @@
 
 - name: Set up default gems
   template:
-    dest: "{{ _rbenv.path }}/default-gems"
-    src: "{{ _rbenv.conf }}"
+    dest: "{{ rbenv.path }}/default-gems"
+    src: list
   vars:
-    gems: "{{ rbenv.gems }}"
+    items: "{{ rbenv.gems }}"
   tags:
     - "rbenv"
 
 - name: rbenv install ruby version
   become: no
-  shell: "{{ rbenv.bin }}/rbenv install {{ rbenv.version }}"
+  command: "{{ _rbenv.path.bin }}/rbenv install {{ rbenv.ruby }}"
   args:
-    creates: "{{ rbenv.path }}/versions/{{ rbenv.version }}"
+    creates: "{{ rbenv.path }}/versions/{{ rbenv.ruby }}"
+  tags:
+    - "rbenv"
+
+- name: rbenv set default ruby
+  become: no
+  template:
+    dest: "{{ rbenv.path }}/version"
+    src: list
+  vars:
+    items:
+      - 2.4.1
   tags:
     - "rbenv"

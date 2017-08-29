@@ -29,4 +29,3 @@ _rbenv:
   path:
     bin: "{{ rbenv.path }}/bin"
     plugins: "{{ rbenv.path }}/plugins"
-  

@@ -1,2 +1,2 @@
 [[ -f ~/.bashrc ]] && . ~/.bashrc
-[[ -d ~/{{ rbenv_bin_path }} ]] && export PATH="~/{{ rbenv_bin_path }}:$PATH"
+[[ -d {{ path.bin }} ]] && export PATH="{{ path.bin }}:$PATH"

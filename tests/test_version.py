@@ -6,7 +6,7 @@ testinfra_hosts = \
 
 
 def test_version(Command):
-    versions = ['2.3.1']
+    versions = ['2.4.1']
     for version in versions:
         cmd_tpl = "/bin/bash -l -c \"rbenv versions --bare | grep {0}\""
         cmd = cmd_tpl.format(version)
