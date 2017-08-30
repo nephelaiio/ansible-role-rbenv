@@ -1,12 +1,9 @@
-# vim: ts=2 sw=2 et :
 ---
-rbenv:
-  repo: https://github.com/rbenv/rbenv.git
-  version: master
-  path: "~/.rbenv"
-  ruby: 2.4.1
-  gems: []
-  plugins:
+rbenv_repo: https://github.com/rbenv/rbenv.git
+rbenv_version: master
+rbenv_path: "~/.rbenv"
+rbenv_gems: []
+rbenv_plugins:
     - name: "rbenv-vars"
       repo: "https://github.com/rbenv/rbenv-vars.git"
     - name: "ruby-build"
@@ -23,9 +20,7 @@ rbenv:
       repo: "https://github.com/rkh/rbenv-use.git"
     - name: "rbenv-gemset"
       repo: "https://github.com/jf/rbenv-gemset.git"
-
-_rbenv:
-  conf: "~/.bash_profile"
-  path:
-    bin: "{{ rbenv.path }}/bin"
-    plugins: "{{ rbenv.path }}/plugins"
+rbenv_ruby: ''
+rbenv_conf: ~/.bash_profile
+rbenv_path_bin: "{{ rbenv_path }}/bin"
+rbenv_path_plugins: "{{ rbenv_path }}/plugins"
