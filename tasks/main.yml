@@ -21,6 +21,8 @@
     repo: "{{ rbenv_repo }}"
     dest: "{{ rbenv_path }}"
     version: "{{ rbenv_version }}"
+  become: yes
+  become_user: "{{ rbenv_user }}"
   tags:
     - rbenv
 
@@ -29,6 +31,7 @@
     dest: "{{ rbenv_conf }}"
     src: bash_profile
     force: 'no'
+    owner: "{{ rbenv_user }}"
   vars:
     path:
       bin: "{{ rbenv_path_bin }}"
@@ -39,6 +42,7 @@
   lineinfile:
     dest: "{{ rbenv_conf }}"
     line: '[[ -d {{ rbenv_path_bin }} ]] && export PATH="{{ rbenv_path_bin }}:$PATH"'
+    owner: "{{ rbenv_user }}"
   tags:
     - rbenv
 
@@ -46,6 +50,7 @@
   lineinfile:
     dest: "{{ rbenv_conf }}"
     line: "[[ -f {{ rbenv_path_bin }}/rbenv ]] && eval \"$({{ rbenv_path_bin }}/rbenv init -)\""
+    owner: "{{ rbenv_user }}"
   tags:
     - rbenv
 
@@ -53,6 +58,7 @@
   file:
     dest: "{{ rbenv_path_plugins }}"
     state: directory
+    owner: "{{ rbenv_user }}"
   tags:
     - rbenv
 
@@ -63,6 +69,8 @@
     version: "{{ item['version'] | default('master') }}"
   with_items:
     - "{{ rbenv_plugins }}"
+  become: yes
+  become_user: "{{ rbenv_user }}"
   tags:
     - rbenv
 
@@ -70,6 +78,7 @@
   template:
     dest: "{{ rbenv_path }}/default-gems"
     src: list
+    owner: "{{ rbenv_user }}"
   vars:
     items: "{{ rbenv_gems }}"
   tags:
@@ -81,6 +90,8 @@
     rbenv_ruby is defined and rbenv_ruby != ''
   args:
     creates: "{{ rbenv_path }}/versions/{{ rbenv_ruby }}"
+  become: yes
+  become_user: "{{ rbenv_user }}"
   notify: configure default ruby
   tags:
     - rbenv
