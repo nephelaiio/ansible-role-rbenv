@@ -21,8 +21,6 @@
     repo: "{{ rbenv_repo }}"
     dest: "{{ rbenv_path }}"
     version: "{{ rbenv_version }}"
-  become: yes
-  become_user: "{{ rbenv_user }}"
   tags:
     - rbenv
 
