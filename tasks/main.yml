@@ -1,28 +1,27 @@
 ---
-- name: "include variable overrides"
+- name: include variable overrides
   include_vars: "{{ item }}"
   with_first_found:
-    - "vars/{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-    - "vars/{{ ansible_distribution }}.yml"
-    - "vars/{{ ansible_os_family }}.yml"
-  tags:
-    - rbenv
+    - files:
+        - "vars/{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+        - "vars/{{ ansible_distribution }}.yml"
+        - "vars/{{ ansible_os_family }}.yml"
+      skip: true
 
 - name: install dependencies
   package:
     name: "{{ item }}"
     state: present
+  become: yes
   with_items: "{{ rbenv_packages }}"
-  tags:
-    - rbenv
 
 - name: install sources
   git:
     repo: "{{ rbenv_repo }}"
     dest: "{{ rbenv_path }}"
     version: "{{ rbenv_version }}"
-  tags:
-    - rbenv
+  become: yes
+  become_user: "{{ rbenv_user }}"
 
 - name: configure bash profile
   template:
@@ -33,32 +32,24 @@
   vars:
     path:
       bin: "{{ rbenv_path_bin }}"
-  tags:
-    - rbenv
 
 - name: configure bash path
   lineinfile:
     dest: "{{ rbenv_conf }}"
     line: '[[ -d {{ rbenv_path_bin }} ]] && export PATH="{{ rbenv_path_bin }}:$PATH"'
     owner: "{{ rbenv_user }}"
-  tags:
-    - rbenv
 
 - name: configure shims
   lineinfile:
     dest: "{{ rbenv_conf }}"
     line: "[[ -f {{ rbenv_path_bin }}/rbenv ]] && eval \"$({{ rbenv_path_bin }}/rbenv init -)\""
     owner: "{{ rbenv_user }}"
-  tags:
-    - rbenv
 
 - name: create plugin dir
   file:
     dest: "{{ rbenv_path_plugins }}"
     state: directory
     owner: "{{ rbenv_user }}"
-  tags:
-    - rbenv
 
 - name: install plugins
   git:
@@ -69,8 +60,6 @@
     - "{{ rbenv_plugins }}"
   become: yes
   become_user: "{{ rbenv_user }}"
-  tags:
-    - rbenv
 
 - name: set up default gems
   template:
@@ -79,8 +68,6 @@
     owner: "{{ rbenv_user }}"
   vars:
     items: "{{ rbenv_gems }}"
-  tags:
-    - rbenv
 
 - name: rbenv install ruby version
   command: "{{ rbenv_path_bin }}/rbenv install {{ rbenv_ruby }}"
@@ -91,5 +78,3 @@
   become: yes
   become_user: "{{ rbenv_user }}"
   notify: configure default ruby
-  tags:
-    - rbenv
