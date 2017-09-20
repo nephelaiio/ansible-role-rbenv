@@ -3,5 +3,3 @@
   template:
     dest: "{{ rbenv_path }}/version"
     src: list
-  tags:
-    - "rbenv"

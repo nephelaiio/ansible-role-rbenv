@@ -70,7 +70,7 @@
     items: "{{ rbenv_gems }}"
 
 - name: rbenv install ruby version
-  command: "{{ rbenv_path_bin }}/rbenv install {{ rbenv_ruby }}"
+  shell: "{{ rbenv_path_bin }}/rbenv install {{ rbenv_ruby }}"
   when:
     rbenv_ruby is defined and rbenv_ruby != ''
   args:
