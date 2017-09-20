@@ -78,3 +78,5 @@
   become: yes
   become_user: "{{ rbenv_user }}"
   notify: configure default ruby
+  tags:
+    - skip_ansible_lint
