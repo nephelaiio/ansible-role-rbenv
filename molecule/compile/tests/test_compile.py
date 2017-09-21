@@ -15,7 +15,7 @@ def test_rbenv_version(host):
         assert host.check_output(cmd) == ruby_version
 
 
-def test_rbenv_local(host):
-    cmd = '~/.rbenv/versions/2.4.1/bin/ruby --version'
+def test_gem(host):
+    cmd = '~/.rbenv/versions/2.4.1/bin/gem list | grep sensu'
     with host.sudo('rbenv'):
         assert host.run(cmd).rc == 0

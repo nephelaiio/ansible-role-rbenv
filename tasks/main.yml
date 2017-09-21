@@ -26,7 +26,7 @@
 - name: configure bash profile
   template:
     dest: "{{ rbenv_conf }}"
-    src: bash_profile
+    src: bash_profile.j2
     force: 'no'
     owner: "{{ rbenv_user }}"
   vars:
@@ -64,7 +64,7 @@
 - name: set up default gems
   template:
     dest: "{{ rbenv_path }}/default-gems"
-    src: list
+    src: list.j2
     owner: "{{ rbenv_user }}"
   vars:
     items: "{{ rbenv_gems }}"
