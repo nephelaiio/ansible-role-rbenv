@@ -12,6 +12,12 @@ provisioner:
   name: ansible
   lint:
     name: ansible-lint
+  inventory:
+    host_vars:
+      debian:
+        rbenv_ruby: 2.4.1
+        rbenv_gems: sensu
+        rbenv_user: rbenv
 scenario:
   name: compile
 verifier:

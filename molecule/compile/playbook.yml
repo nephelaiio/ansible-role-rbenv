@@ -1,5 +1,12 @@
 ---
 - name: Converge
   hosts: all
-  roles:
-    - role: nephelaiio.rbenv
+  tasks:
+    - user:
+        name: rbenv
+        group: users
+        shell: /bin/bash
+        home: /opt/rbenv
+        system: yes
+    - include_role:
+        name: nephelaiio.rbenv
