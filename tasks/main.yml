@@ -79,3 +79,11 @@
   become_user: "{{ rbenv_user }}"
   tags:
     - skip_ansible_lint
+
+- name: link ruby home
+  file:
+    src: "{{ rbenv_path }}/versions/{{ rbenv_ruby }}"
+    dest: "{{ rbenv_ruby_path }}"
+    state: link
+    owner: "{{ rbenv_user }}"
+  when: rbenv_ruby_path != ''

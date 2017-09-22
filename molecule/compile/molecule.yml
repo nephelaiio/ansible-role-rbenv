@@ -19,6 +19,7 @@ provisioner:
         rbenv_gems:
           - sensu
         rbenv_user: rbenv
+        rbenv_ruby_path: /opt/ruby
 scenario:
   name: compile
 verifier:

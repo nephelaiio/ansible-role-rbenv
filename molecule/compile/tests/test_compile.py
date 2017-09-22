@@ -19,3 +19,10 @@ def test_gem(host):
     cmd = '~/.rbenv/versions/2.4.1/bin/gem list | grep sensu'
     with host.sudo('rbenv'):
         assert host.run(cmd).rc == 0
+
+
+def test_ruby_home(host):
+    ruby = '/opt/rbenv/.rbenv/versions/2.4.1'
+    assert host.file('/opt/ruby').exists
+    assert host.file('/opt/ruby').is_symlink
+    assert host.file('/opt/ruby/').linked_to == ruby
