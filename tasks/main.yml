@@ -23,30 +23,32 @@
   become: yes
   become_user: "{{ rbenv_user }}"
 
-- block:
+- name: configure bash profile
+  template:
+    dest: "{{ rbenv_conf }}"
+    src: bash_profile.j2
+    force: 'no'
+    owner: "{{ rbenv_user }}"
+  vars:
+    bin: "{{ rbenv_path_bin }}"
+  become: yes
+  become_user: "{{ rbenv_user }}"
 
-  - name: configure bash profile
-    template:
-      dest: "{{ rbenv_conf }}"
-      src: bash_profile.j2
-      force: 'no'
-      owner: "{{ rbenv_user }}"
-    vars:
-      bin: "{{ rbenv_path_bin }}"
+- name: configure bash path
+  lineinfile:
+    dest: "{{ rbenv_conf }}"
+    line: '[[ -d {{ rbenv_path_bin }} ]] && export PATH="{{ rbenv_path_bin }}:$PATH"'
+    owner: "{{ rbenv_user }}"
+  become: yes
+  become_user: "{{ rbenv_user }}"
 
-  - name: configure bash path
-    lineinfile:
-      dest: "{{ rbenv_conf }}"
-      line: '[[ -d {{ rbenv_path_bin }} ]] && export PATH="{{ rbenv_path_bin }}:$PATH"'
-      owner: "{{ rbenv_user }}"
-
-  - name: configure shims
-    lineinfile:
-      dest: "{{ rbenv_conf }}"
-      line: "[[ -f {{ rbenv_path_bin }}/rbenv ]] && eval \"$({{ rbenv_path_bin }}/rbenv init -)\""
-      owner: "{{ rbenv_user }}"
-
-  when: rbenv_conf != None and rbenv_conf != ''
+- name: configure shims
+  lineinfile:
+    dest: "{{ rbenv_conf }}"
+    line: "[[ -f {{ rbenv_path_bin }}/rbenv ]] && eval \"$({{ rbenv_path_bin }}/rbenv init -)\""
+    owner: "{{ rbenv_user }}"
+  become: yes
+  become_user: "{{ rbenv_user }}"
 
 - name: create plugin dir
   file:
