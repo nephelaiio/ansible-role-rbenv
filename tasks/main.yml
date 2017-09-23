@@ -29,6 +29,7 @@
     src: bash_profile.j2
     force: 'no'
     owner: "{{ rbenv_user }}"
+  when: rbenv_conf
   vars:
     path:
       bin: "{{ rbenv_path_bin }}"
