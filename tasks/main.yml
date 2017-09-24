@@ -95,4 +95,5 @@
     dest: "{{ rbenv_ruby_path }}"
     state: link
     owner: "{{ rbenv_user }}"
+  become: yes
   when: rbenv_ruby_path != ''
