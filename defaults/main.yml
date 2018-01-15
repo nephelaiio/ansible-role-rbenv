@@ -1,8 +1,7 @@
 ---
-rbenv_user: "{{ ansible_user_id | default(lookup('env', 'USER')) }}"
 rbenv_repo: https://github.com/rbenv/rbenv.git
 rbenv_version: master
-rbenv_path: "~{{ rbenv_user }}/.rbenv"
+rbenv_path: "~/.rbenv"
 rbenv_gems: []
 rbenv_plugins:
     - name: "rbenv-vars"
@@ -23,6 +22,6 @@ rbenv_plugins:
       repo: "https://github.com/jf/rbenv-gemset.git"
 rbenv_ruby: ''
 rbenv_ruby_path: ''
-rbenv_conf: "~{{ rbenv_user }}/.bash_profile"
+rbenv_conf: "~/.bash_profile"
 rbenv_path_bin: "{{ rbenv_path }}/bin"
 rbenv_path_plugins: "{{ rbenv_path }}/plugins"
