@@ -11,14 +11,12 @@ ruby_version = '2.4.1'
 
 def test_rbenv_version(host):
     cmd = '~/.rbenv/bin/rbenv versions --bare'
-    with host.sudo('rbenv'):
-        assert host.check_output(cmd) == ruby_version
+    assert host.check_output(cmd) == ruby_version
 
 
 def test_gem(host):
     cmd = '~/.rbenv/versions/2.4.1/bin/gem list | grep sensu'
-    with host.sudo('rbenv'):
-        assert host.run(cmd).rc == 0
+    assert host.run(cmd).rc == 0
 
 
 def test_ruby_home(host):
