@@ -10,17 +10,17 @@ ruby_version = '2.4.1'
 
 
 def test_rbenv_version(host):
-    cmd = '~/.rbenv/bin/rbenv versions --bare'
+    cmd = '/root/.rbenv/bin/rbenv versions --bare'
     assert host.check_output(cmd) == ruby_version
 
 
 def test_gem(host):
-    cmd = '~/.rbenv/versions/2.4.1/bin/gem list | grep sensu'
+    cmd = '/root/.rbenv/versions/2.4.1/bin/gem list | grep sensu'
     assert host.run(cmd).rc == 0
 
 
 def test_ruby_home(host):
-    ruby = '~/.rbenv/versions/2.4.1'
+    ruby = '/root/.rbenv/versions/2.4.1'
     assert host.file('/opt/ruby').exists
     assert host.file('/opt/ruby').is_symlink
     assert host.file('/opt/ruby/').linked_to == ruby
