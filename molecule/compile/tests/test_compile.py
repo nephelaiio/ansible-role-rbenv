@@ -20,7 +20,7 @@ def test_gem(host):
 
 
 def test_ruby_home(host):
-    ruby = '/opt/rbenv/.rbenv/versions/2.4.1'
+    ruby = '~/.rbenv/versions/2.4.1'
     assert host.file('/opt/ruby').exists
     assert host.file('/opt/ruby').is_symlink
     assert host.file('/opt/ruby/').linked_to == ruby
