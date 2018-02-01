@@ -13,7 +13,7 @@
     name: "{{ item }}"
     state: present
   become: yes
-  with_items: "{{ rbenv_packages }}"
+  with_items: "{{ rbenv_packages | default(rbenv_packages_default) }}"
 
 - name: install sources
   git:

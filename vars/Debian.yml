@@ -1,5 +1,5 @@
 ---
-rbenv_packages:
+rbenv_packages_default:
   - libcurl4-openssl-dev
   - libffi-dev
   - libreadline-dev

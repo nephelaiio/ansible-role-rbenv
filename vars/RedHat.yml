@@ -1,5 +1,5 @@
 ---
-rbenv_packages:
+rbenv_packages_default:
   - openssl-devel
   - libyaml-devel
   - readline-devel
