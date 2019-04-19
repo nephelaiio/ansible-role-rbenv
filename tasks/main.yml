@@ -12,7 +12,6 @@
   package:
     name: "{{ item }}"
     state: present
-  become: yes
   with_items: "{{ rbenv_packages | default(rbenv_packages_default) }}"
 
 - name: install sources
@@ -20,34 +19,32 @@
     repo: "{{ rbenv_repo }}"
     dest: "{{ rbenv_path }}"
     version: "{{ rbenv_version }}"
-  become: yes
 
 - name: configure bash profile
   template:
-    dest: "{{ rbenv_conf }}"
+    dest: "{{ rbenv_bash_conf_path }}"
     src: bash_profile.j2
     force: 'no'
   vars:
     bin: "{{ rbenv_path_bin }}"
-  become: yes
+  when: rbenv_bash_conf
 
 - name: configure bash path
   lineinfile:
-    dest: "{{ rbenv_conf }}"
+    dest: "{{ rbenv_bash_conf_path }}"
     line: '[[ -d {{ rbenv_path_bin }} ]] && export PATH="{{ rbenv_path_bin }}:$PATH"'
-  become: yes
+  when: rbenv_bash_conf
 
 - name: configure shims
   lineinfile:
-    dest: "{{ rbenv_conf }}"
+    dest: "{{ rbenv_bash_conf_path }}"
     line: "[[ -f {{ rbenv_path_bin }}/rbenv ]] && eval \"$({{ rbenv_path_bin }}/rbenv init -)\""
-  become: yes
+  when: rbenv_bash_conf
 
 - name: create plugin dir
   file:
     dest: "{{ rbenv_path_plugins }}"
     state: directory
-  become: yes
 
 - name: install plugins
   git:
@@ -56,7 +53,6 @@
     version: "{{ item['version'] | default('master') }}"
   with_items:
     - "{{ rbenv_plugins }}"
-  become: yes
 
 - name: set up default gems
   template:
@@ -64,15 +60,13 @@
     src: list.j2
   vars:
     items: "{{ rbenv_gems }}"
-  become: yes
 
 - name: install ruby version
   shell: "{{ rbenv_path_bin }}/rbenv install {{ rbenv_ruby }}"
   when:
-    rbenv_ruby is defined and rbenv_ruby != ''
+    rbenv_ruby is defined
   args:
     creates: "{{ rbenv_path }}/versions/{{ rbenv_ruby }}"
-  become: yes
   tags:
     - skip_ansible_lint
 
@@ -81,5 +75,6 @@
     src: "{{ rbenv_path }}/versions/{{ rbenv_ruby }}"
     dest: "{{ rbenv_ruby_path }}"
     state: link
-  become: yes
-  when: rbenv_ruby_path != ''
+  when:
+    - rbenv_ruby is defined
+    - rbenv_ruby_path is defined

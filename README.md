@@ -9,15 +9,18 @@ An [ansible role](https://galaxy.ansible.com/nephelaiio/rbenv) to install and co
 
 Please refer to the [defaults file](/defaults/main.yml) for an up-to-date list of input parameters.
 
-## Example Playbook
+Set ```rbenv_ruby``` to a ruby version to perform automatic installation; set ```rbenv_ruby_path``` additionally in order to create a symlink to the newly installed ruby version.
+Set ```rbenv_bash_conf``` to true in order to configure the ansible connecting user bash profile to use rbenv binaries
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+
+## Example Playbook
 
 ```
     - hosts: servers
       roles:
          - role: rbenv
            rbenv_ruby: 2.4.1
+           rbenv_ruby_path: /tmp/ruby2.4.1
 ```
 
 ## Testing

@@ -21,8 +21,9 @@ rbenv_plugins:
       repo: "https://github.com/rkh/rbenv-use.git"
     - name: "rbenv-gemset"
       repo: "https://github.com/jf/rbenv-gemset.git"
-rbenv_ruby: ''
-rbenv_ruby_path: ''
-rbenv_conf: "~/.bash_profile"
+# rbenv_ruby: ''
+# rbenv_ruby_path: ''
+rbenv_bash_conf: no
+rbenv_bash_conf_path: "~/.bash_profile"
 rbenv_path_bin: "{{ rbenv_path }}/bin"
 rbenv_path_plugins: "{{ rbenv_path }}/plugins"
