@@ -18,6 +18,10 @@ platforms:
     image: archlinux/base:latest
 provisioner:
   name: ansible
+  inventory:
+    group_vars:
+      all:
+        rbenv_bash_conf: yes
   lint:
     name: ansible-lint
 scenario:
