@@ -25,6 +25,8 @@ Set ```rbenv_bash_conf``` to true in order to configure the ansible connecting u
 
 ## Testing
 
+Please make sure your environment has [docker](https://www.docker.com) installed in order to run role validation tests. Additional python dependencies are listed in the [requirements file](https://github.com/nephelaiio/ansible-role-requirements/blob/master/requirements.txt)
+
 Role is tested against the following distributions (docker images):
   * Ubuntu Xenial
   * CentOS 7
