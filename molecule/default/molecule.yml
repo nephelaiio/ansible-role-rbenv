@@ -14,8 +14,6 @@ platforms:
     image: ubuntu:bionic
   - name: xenial
     image: ubuntu:xenial
-  - name: arch
-    image: archlinux/base:latest
 provisioner:
   name: ansible
   inventory:
