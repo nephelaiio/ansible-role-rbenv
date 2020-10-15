@@ -3,15 +3,15 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .
 platforms:
   - name: debian
     image: debian:stretch
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
   inventory:
     host_vars:
       debian:
@@ -23,5 +23,3 @@ scenario:
   name: compile
 verifier:
   name: testinfra
-  lint:
-    name: flake8
